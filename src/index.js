@@ -8,7 +8,7 @@ import 'popper.js/dist/umd/popper.js';
 import 'bootstrap/dist/js/bootstrap.js';
 
 ReactDOM.render(
-  <App authorized={false}/>,
+  <App/>,
   document.getElementById('root')
 );
 
