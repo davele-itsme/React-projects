@@ -1,37 +1,46 @@
-import React, { Component } from 'react';
-import '../css/App.css';
-import About from './About';
-import Skills from './Skills';
-import ContactMe from './ContactMe';
+import React, { useEffect, useState } from "react";
+import "../css/App.css";
+import AddApointment from "./AddApointment";
+import ListAppointments from "./ListAppointments";
+import ContactMe from "./ContactMe";
 
-class App extends Component {
+import { without } from "lodash";
 
-  constructor()
-  {
-    super();
-    this.state = {
-      myName: "hello"
-    }
+function App() {
+  const [petList, setPets] = useState([]);
+  const [formDisplay, setDisplay] = useState(false);
+
+  useEffect(() => {
+    fetch("./data.json")
+      .then((data) => data.json())
+      .then(setPets);
+  }, []);
+
+  function deleteAppointment(pet) {
+    let tempApts = petList;
+    //without will take array and return it without apt
+    tempApts = without(petList, pet);
+    setPets(tempApts);
   }
 
-  render() {
-    return (
-      <main className="page bg-white" id="petratings">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 bg-white">
-              <div className="container">
-                { this.state.myName }
-                <About />
-                <Skills />
-                <ContactMe />
-              </div>
+  return (
+    <main className="page bg-white" id="petratings">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12 bg-white">
+            <div className="container">
+              <AddApointment formDisplay={formDisplay} />
+              <ListAppointments
+                pets={petList}
+                deleteAppointment={deleteAppointment}
+              />
+              <ContactMe />
             </div>
           </div>
         </div>
-      </main>
-    );
-  }
+      </div>
+    </main>
+  );
 }
 
 export default App;
